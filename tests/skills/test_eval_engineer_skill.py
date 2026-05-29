@@ -129,6 +129,34 @@ class EvalEngineerSkillTest(unittest.TestCase):
             for term in required_terms:
                 self.assertIn(term, text, f"{term} missing from {skill_name}")
 
+    def test_eval_setup_requires_live_galileo_readiness_checks(self) -> None:
+        setup_text = (ROOT / "skills" / "eval-setup" / "SKILL.md").read_text(encoding="utf-8")
+        reference = SKILL_DIR / "references" / "galileo-live-readiness.md"
+        self.assertTrue(reference.is_file(), reference)
+        reference_text = reference.read_text(encoding="utf-8")
+
+        required_setup_terms = [
+            "galileo-live-readiness.md",
+            "metrics enabled",
+            "scorer/recompute job",
+            "queryable metric values",
+            "Do not call a Galileo project ready when only the project exists",
+        ]
+        for term in required_setup_terms:
+            self.assertIn(term, setup_text)
+
+        required_reference_terms = [
+            "A project shell is not evidence",
+            "log stream",
+            "traces or spans",
+            "metrics enabled",
+            "scoring or recompute jobs",
+            "queryable metric values",
+            "galileo_fetched/local_generated/missing",
+        ]
+        for term in required_reference_terms:
+            self.assertIn(term, reference_text)
+
     def test_project_skill_links_cover_all_command_skills(self) -> None:
         for skill_root in (ROOT / ".agents" / "skills", ROOT / ".claude" / "skills"):
             if not skill_root.is_dir():

@@ -141,6 +141,7 @@ will get it.
 - Debug packet schema and usage: `references/debug-packets.md`
 - Eval dataset case design: `references/eval-datasets.md`
 - Galileo evidence sources: `references/galileo-sources.md`
+- Galileo live readiness: `references/galileo-live-readiness.md`
 - Galileo metric selection: `references/metrics.md`
 - Metric-profile checklist for cases and segments:
   `references/metric-profile-checklist.md`

@@ -18,6 +18,10 @@ missing configuration, and tell the user what evidence is still needed.
   commands when the user knows them.
 - Explain which evidence is needed next: trace, session, log stream,
   experiment, metric profile, or verification packet.
+- For live Galileo work, load
+  `skills/eval-engineer/references/galileo-live-readiness.md` and report the
+  project, evidence source, traces, metrics, scorer/recompute job, and queryable
+  metric status before saying setup is ready.
 
 ## Do Not
 
@@ -25,12 +29,26 @@ missing configuration, and tell the user what evidence is still needed.
 - Do not fetch Galileo evidence unless the user provides a URL/ID or asks for
   `/eval-fetch`.
 - Do not diagnose or fix application behavior during setup.
+- Do not call a Galileo project ready when only the project exists. A ready
+  Galileo source needs a log stream, experiment, session, or trace with records,
+  enabled metrics, completed scoring/recompute, and queryable metric values.
 
 ## Validation Loop
 
 Before reporting ready, confirm `.galileo/config.yml`, `.galileo/current/`,
 `.galileo/eval-dataset/`, `.galileo/sessions/`, and `.galileo/learnings.md`
-exist, then list missing config values without guessing them.
+exist, then list missing config values without guessing them. If a Galileo live
+source is in scope, also produce:
+
+```text
+Galileo readiness:
+- project: ready/missing
+- evidence source: log stream/experiment/session/trace/missing
+- traces or spans: ready/missing
+- metrics enabled: ready/missing
+- scoring jobs: completed/running/failed/missing
+- queryable metric values: ready/missing
+```
 
 ## Output
 
