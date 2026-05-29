@@ -24,6 +24,12 @@ Start by checking what the user gave you and what the project already has:
 - configured verification commands
 - metric profile or expected-output contract
 
+If the user expects Galileo-backed diagnosis, measurement, or verification and
+no hosted Galileo locator is available, use
+`references/galileo-integration-intake.md` before creating local evidence. Ask
+for the missing project, log stream, experiment, session, trace, scorer, time
+window, or credential confirmation, or get explicit local-only confirmation.
+
 Then report one compact status block:
 
 ```text
@@ -33,7 +39,10 @@ evidence -> diagnosis -> bounded change -> verification.
 Current project state:
 - workspace: ready/missing
 - evidence: ready/missing/ambiguous
+- hosted Galileo evidence used: yes/no/unknown
 - measurement: ready/missing
+- missing Galileo inputs: none/<specific fields>
+- local-only workflow confirmed: yes/no
 - best next command: /eval-...
 ```
 
@@ -59,6 +68,12 @@ If the right route is uncertain, ask one clarifying question. If evidence is
 missing, explain exactly what is missing and how `/eval-fetch` or `/eval-setup`
 will get it.
 
+If hosted Galileo evidence is required but the project, log stream, experiment,
+session, trace, metric/scorer, time window, or credential confirmation is
+missing, ask for that required Galileo integration information before creating
+`.galileo/current/debug-packet.json`, verification packets, local eval scripts,
+or local score reports.
+
 ## Core Loop
 
 1. **Find the working set.**
@@ -72,6 +87,9 @@ will get it.
    - Read `.galileo/learnings.md` if it exists.
    - If no current packet exists, use a user-provided packet path or help import
      Galileo evidence before diagnosing.
+   - Do not create local packets or harnesses as a substitute for missing
+     Galileo integration inputs unless the user explicitly chooses local-only
+     evaluation.
 
 2. **Summarize evidence before reasoning.**
    - Run:
@@ -150,10 +168,13 @@ will get it.
   metric, or dataset fix is enough.
 - Do not provide RCA claims without trace, span, session, metric, dataset,
   experiment, or log-stream evidence.
+- Do not present local-only packets, synthetic traces, or local scorer output as
+  hosted Galileo evidence.
 
 ## References
 
 - Working-set structure: `references/working-set.md`
+- Galileo integration intake: `references/galileo-integration-intake.md`
 - Debug packet schema and usage: `references/debug-packets.md`
 - Evidence provenance: `references/evidence-provenance.md`
 - Eval dataset case design: `references/eval-datasets.md`

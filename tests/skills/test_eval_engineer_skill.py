@@ -84,8 +84,21 @@ class EvalEngineerSkillTest(unittest.TestCase):
         self.assertEqual(len(set(descriptions.values())), len(COMMAND_SKILLS))
 
         expectations = {
-            "eval-engineer": ["front door", "route", "Current Project State", "/eval-dataset"],
-            "eval-setup": [".galileo/config.yml", "Do not guess metrics", "/eval-diagnose"],
+            "eval-engineer": [
+                "front door",
+                "route",
+                "Current Project State",
+                "/eval-dataset",
+                "galileo-integration-intake.md",
+                "hosted Galileo evidence used",
+            ],
+            "eval-setup": [
+                ".galileo/config.yml",
+                "Do not guess metrics",
+                "/eval-diagnose",
+                "galileo-integration-intake.md",
+                "missing Galileo integration inputs",
+            ],
             "eval-fetch": [
                 "Galileo URL",
                 "source.console_url",
@@ -219,6 +232,39 @@ class EvalEngineerSkillTest(unittest.TestCase):
         self.assertNotIn("trace IDs", description)
         self.assertNotIn("log stream IDs", description)
         self.assertNotIn("production symptoms", description)
+
+    def test_eval_engineer_requires_galileo_integration_intake_before_local_evidence(self) -> None:
+        core = (ROOT / "skills" / "eval-engineer" / "SKILL.md").read_text(encoding="utf-8")
+        setup = (ROOT / "skills" / "eval-setup" / "SKILL.md").read_text(encoding="utf-8")
+        installer_cli = (ROOT / "src" / "eval_engineer_installer" / "cli.py").read_text(
+            encoding="utf-8"
+        )
+        reference_path = SKILL_DIR / "references" / "galileo-integration-intake.md"
+        reference = reference_path.read_text(encoding="utf-8")
+
+        self.assertIn("references/galileo-integration-intake.md", installer_cli)
+        self.assertIn("hosted Galileo evidence used", core)
+        self.assertIn("missing Galileo inputs", core)
+        self.assertIn("local-only workflow confirmed", core)
+        self.assertIn("before creating local evidence", core)
+        self.assertIn("scripts/evaluate_*", setup)
+
+        required_terms = [
+            "Required Inputs",
+            "GALILEO_CONSOLE_URL",
+            "project URL or project ID",
+            "log stream URL/ID",
+            "experiment URL/ID",
+            "session ID",
+            "trace ID",
+            "metric/scorer names",
+            "GALILEO_API_KEY",
+            "Do Not Substitute",
+            "evidence-provenance.md",
+            "local-only evaluation",
+        ]
+        for term in required_terms:
+            self.assertIn(term, reference, f"{term} missing from {reference_path}")
 
     def test_galileo_url_parser_handles_console_urls(self) -> None:
         module = _load_url_parser()

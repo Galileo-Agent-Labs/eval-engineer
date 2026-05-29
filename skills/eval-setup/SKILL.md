@@ -22,12 +22,21 @@ missing configuration, and tell the user what evidence is still needed.
   `skills/eval-engineer/references/galileo-live-readiness.md` and report the
   project, evidence source, traces, metrics, scorer/recompute job, and queryable
   metric status before saying setup is ready.
+- Before creating or accepting local eval evidence, use
+  `skills/eval-engineer/references/galileo-integration-intake.md` to ask for
+  the required Galileo project, log stream, experiment, session, trace,
+  metric/scorer, time window, or credential confirmation.
+- If the user wants local-only evaluation, record explicit local-only
+  confirmation before creating local packets, scripts, or score reports.
 
 ## Do Not
 
 - Do not guess metrics, providers, app type, or production safety requirements.
 - Do not fetch Galileo evidence unless the user provides a URL/ID or asks for
   `/eval-fetch`.
+- Do not create `.galileo/current/debug-packet.json`, verification packets,
+  `scripts/evaluate_*`, synthetic traces, or local score reports as a substitute
+  for missing Galileo integration inputs.
 - Do not diagnose or fix application behavior during setup.
 - Do not call a Galileo project ready when only the project exists. A ready
   Galileo source needs a log stream, experiment, session, or trace with records,

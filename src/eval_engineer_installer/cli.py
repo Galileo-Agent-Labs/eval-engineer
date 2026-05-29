@@ -31,6 +31,7 @@ CORE_REQUIRED_FILES = (
     "references/tokenomics-rca.md",
     "references/galileo-url-intake.md",
     "references/evidence-provenance.md",
+    "references/galileo-integration-intake.md",
     "references/eval-datasets.md",
     "scripts/summarize_debug_packet.py",
     "scripts/compare_tokenomics_packets.py",
