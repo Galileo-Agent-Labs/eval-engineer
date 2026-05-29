@@ -83,6 +83,15 @@ $eval-cost compare the baseline and verification packets
 See `docs/installation.md` for user-scope installs, detailed command behavior,
 and plugin packaging guidance.
 
+For global Codex usage, user-scope installs write to
+`$CODEX_HOME/skills/eval-*`, defaulting to `~/.codex/skills/eval-*` when
+`CODEX_HOME` is not set. Validate that path explicitly with:
+
+```bash
+uvx --from git+https://github.com/Galileo-Agent-Labs/eval-engineer.git \
+  eval-engineer check --target codex --scope user
+```
+
 ## Why This Matters
 
 AI failures rarely live in source code alone. The important evidence is often in

@@ -8,6 +8,7 @@ import tempfile
 import unittest
 from contextlib import redirect_stderr, redirect_stdout
 from io import StringIO
+from unittest.mock import patch
 from pathlib import Path
 
 
@@ -83,6 +84,20 @@ class EvalEngineerInstallerTest(unittest.TestCase):
 
             self.assertEqual(install_result, 0)
             self.assertEqual(check_result, 0)
+
+    def test_user_codex_install_uses_codex_home_skills(self) -> None:
+        with tempfile.TemporaryDirectory() as tmpdir:
+            codex_home = Path(tmpdir) / "codex-home"
+
+            with patch.dict("os.environ", {"CODEX_HOME": str(codex_home)}):
+                install_result = run_cli(["install", "--target", "codex", "--scope", "user"])
+                check_result = run_cli(["check", "--target", "codex", "--scope", "user"])
+
+            self.assertEqual(install_result, 0)
+            self.assertEqual(check_result, 0)
+            for skill_name in cli.SKILL_NAMES:
+                skill_dir = codex_home / "skills" / skill_name
+                self.assertTrue((skill_dir / "SKILL.md").is_file(), skill_dir)
 
 
 if __name__ == "__main__":

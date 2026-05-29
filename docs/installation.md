@@ -48,8 +48,17 @@ uvx --from git+https://github.com/Galileo-Agent-Labs/eval-engineer.git \
   eval-engineer install --target both --scope user
 ```
 
-User-scope installs write to `~/.agents/skills/eval-engineer` for Codex
-and `~/.claude/skills/eval-engineer` for Claude Code.
+User-scope installs write to `$CODEX_HOME/skills/eval-*` for Codex, defaulting
+to `~/.codex/skills/eval-*` when `CODEX_HOME` is not set. Claude Code
+user-scope installs write to `~/.claude/skills/eval-*`.
+
+Validate a global Codex install with the same environment the Codex session
+will use:
+
+```bash
+uvx --from git+https://github.com/Galileo-Agent-Labs/eval-engineer.git \
+  eval-engineer check --target codex --scope user
+```
 
 Use `--force` when intentionally replacing an existing install. Use a tagged Git
 ref once releases exist if the install must be reproducible. The install itself

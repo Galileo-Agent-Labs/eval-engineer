@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import os
 import shutil
 import sys
 from contextlib import contextmanager
@@ -111,6 +112,10 @@ def _selected_agents(target: str) -> list[str]:
     return [target]
 
 
+def _codex_home() -> Path:
+    return Path(os.environ.get("CODEX_HOME") or (Path.home() / ".codex")).expanduser()
+
+
 def _destinations(target: str, scope: str, project_dir: Path) -> list[Destination]:
     project_dir = project_dir.expanduser().resolve()
     destinations: list[Destination] = []
@@ -118,7 +123,7 @@ def _destinations(target: str, scope: str, project_dir: Path) -> list[Destinatio
         if scope == "project":
             base = project_dir / (".agents" if agent == "codex" else ".claude") / "skills"
         elif agent == "codex":
-            base = Path.home() / ".agents" / "skills"
+            base = _codex_home() / "skills"
         else:
             base = Path.home() / ".claude" / "skills"
         destinations.append(Destination(agent=agent, scope=scope, skills_root=base))
