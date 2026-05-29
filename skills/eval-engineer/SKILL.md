@@ -77,6 +77,9 @@ will get it.
    - Run:
      `python3 skills/eval-engineer/scripts/summarize_debug_packet.py <packet>`
    - Use raw traces only when the compact packet is missing required evidence.
+   - Classify score provenance using
+     `references/evidence-provenance.md` before treating metrics as Galileo
+     evidence. A packet under `.galileo/` is not automatically hosted Galileo evidence.
 
 3. **Diagnose from Galileo concepts.**
    - Use metrics to identify what degraded.
@@ -101,6 +104,14 @@ will get it.
    - Write or update `.galileo/current/verification-plan.md`.
    - Use the templates in `assets/` for expected artifact shape.
    - Preserve Galileo evidence links or stable IDs in every RCA artifact.
+   - Include this compact block in RCA artifacts that mention metrics:
+
+     ```text
+     Evidence provenance:
+     - hosted Galileo evidence used: yes/no
+     - score source: galileo_fetched/local_existing/local_generated/mixed/unknown
+     - missing before Galileo-backed claim: none/<specific IDs or metrics>
+     ```
    - Keep edits inside allowed paths from `.galileo/config.yml`.
    - If useful, append a concise general pattern to `.galileo/learnings.md`.
 
@@ -120,6 +131,8 @@ will get it.
    - Compare the new run against `.galileo/current/debug-packet.json`, the
      verification packet, or a session manifest.
    - Report improved, regressed, and unchanged metrics.
+   - Label local verification scores as local. Do not present local generated
+     packets as server-side Galileo metric results.
    - A prompt or code diff alone is never proof of improvement.
 
 ## Guardrails
@@ -130,6 +143,9 @@ will get it.
 - Do not use ambiguous packet names such as `debug-packet-after.json`; use
   `verification-debug-packet.json` for after-change evidence in `.galileo/current/`.
 - Do not promote eval candidates without human review.
+- Do not create or rely on a new local eval harness as a substitute for Galileo
+  evidence unless the user explicitly asks for fixture generation or confirms
+  local-only evaluation.
 - Do not make broad rewrites when a bounded prompt, tool, retriever, guardrail,
   metric, or dataset fix is enough.
 - Do not provide RCA claims without trace, span, session, metric, dataset,
@@ -139,6 +155,7 @@ will get it.
 
 - Working-set structure: `references/working-set.md`
 - Debug packet schema and usage: `references/debug-packets.md`
+- Evidence provenance: `references/evidence-provenance.md`
 - Eval dataset case design: `references/eval-datasets.md`
 - Galileo evidence sources: `references/galileo-sources.md`
 - Galileo live readiness: `references/galileo-live-readiness.md`

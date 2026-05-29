@@ -108,6 +108,7 @@ class EvalEngineerSkillTest(unittest.TestCase):
             "eval-measure": ["metric-profile-checklist.md", "expected-output contract", "Findings first"],
             "eval-diagnose": [
                 "rca-recipe.md",
+                "evidence-provenance.md",
                 "fix surface",
                 "Honor read-only requests",
                 "Unless the request is read-only",
@@ -156,6 +157,43 @@ class EvalEngineerSkillTest(unittest.TestCase):
         ]
         for term in required_reference_terms:
             self.assertIn(term, reference_text)
+
+    def test_eval_engineer_requires_evidence_provenance_labels(self) -> None:
+        skill_text = (ROOT / "skills" / "eval-engineer" / "SKILL.md").read_text(encoding="utf-8")
+        diagnose_text = (ROOT / "skills" / "eval-diagnose" / "SKILL.md").read_text(encoding="utf-8")
+        installer_text = (ROOT / "src" / "eval_engineer_installer" / "cli.py").read_text(
+            encoding="utf-8"
+        )
+        reference = SKILL_DIR / "references" / "evidence-provenance.md"
+        self.assertTrue(reference.is_file(), reference)
+        reference_text = reference.read_text(encoding="utf-8")
+
+        for term in [
+            "evidence-provenance.md",
+            "Evidence provenance:",
+            "hosted Galileo evidence used: yes/no",
+            "score source: galileo_fetched/local_existing/local_generated/mixed/unknown",
+            "missing before Galileo-backed claim: none/<specific IDs or metrics>",
+            "A packet under `.galileo/` is not automatically hosted Galileo evidence",
+            "Do not create or rely on a new local eval harness",
+        ]:
+            self.assertIn(term, skill_text)
+
+        self.assertIn("evidence-provenance.md", diagnose_text)
+        self.assertIn("local deterministic packets", diagnose_text)
+
+        for term in [
+            "galileo_fetched",
+            "local_existing",
+            "local_generated",
+            "Evidence provenance:",
+            "missing before Galileo-backed claim: none/<specific IDs or metrics>",
+            "Galileo evidence has not been fetched",
+            "Do not create a new eval harness",
+        ]:
+            self.assertIn(term, reference_text)
+
+        self.assertIn('"references/evidence-provenance.md"', installer_text)
 
     def test_project_skill_links_cover_all_command_skills(self) -> None:
         for skill_root in (ROOT / ".agents" / "skills", ROOT / ".claude" / "skills"):

@@ -11,13 +11,16 @@ trace/session/log-stream context is available.
 ## Required Reference
 
 Use `skills/eval-engineer/references/rca-recipe.md`,
-`skills/eval-engineer/references/debug-packets.md`, and
+`skills/eval-engineer/references/debug-packets.md`,
+`skills/eval-engineer/references/evidence-provenance.md`, and
 `skills/eval-engineer/assets/diagnosis-template.md`.
 
 ## Do
 
 - Start from fetched evidence, not source-code guesses.
 - Name the failing metric contract and what it proves.
+- Label hosted Galileo evidence separately from local deterministic packets
+  before making metric or score claims.
 - Inspect traces, spans, sessions, tool calls, retrieval context, and scorer
   status to classify the fix surface.
 - Classify the fix surface: prompt, tool schema, adapter, retriever, ranker,
